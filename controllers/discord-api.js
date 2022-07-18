@@ -1,12 +1,19 @@
 const db = require('../db');
 
-const postMessages = async (req, res) => {
-  const { content, owner } = req.body;
+const postMessages = (content, owner) => {
   const date = new Date();
-  const newMessage = await db.query('INSERT INTO message (content, owner, date) values ($1, $2, $3) RETURNING *', [content, owner, date]);
-
-  // console.log(content, owner, date);
-  res.json(newMessage.rows[0]);
+  db.query('INSERT INTO message (content, owner, date) values ($1, $2, $3)', [content, owner, date])
+    .then(() => console.log(`сообщение "${content}" успешно добавлено`))
+    .catch((err) => console.log(err));
 };
 
-module.exports = { postMessages };
+const getMessages = (req, res) => {
+  db.query('SELECT * FROM message', (error, results) => {
+    if (error) {
+      throw error;
+    }
+    res.status(200).json(results.rows);
+  });
+};
+
+module.exports = { postMessages, getMessages };

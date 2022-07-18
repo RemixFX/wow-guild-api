@@ -1,7 +1,6 @@
 const router = require('express').Router();
-const { getMessages, postMessages } = require('../controllers/discord-api');
+const { getMessages } = require('../controllers/discord-api');
 
-// router.get('/discord', getMessages);
-router.post('/discord', postMessages);
+router.get('/discord', getMessages);
 
 module.exports = router;
