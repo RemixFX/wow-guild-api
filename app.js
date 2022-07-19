@@ -13,4 +13,4 @@ botCollectMessage();
 botLogin();
 
 app.use(routes);
-app.listen(PORT);
+app.listen(PORT, () => console.log('Сервер запущен'));

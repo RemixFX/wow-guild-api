@@ -5,7 +5,7 @@ const bot = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MES
 
 const botCheckReady = () => {
   bot.once('ready', () => {
-    console.log('Ready!');
+    console.log('Discord-бот готов');
   });
 };
 
