@@ -4,7 +4,7 @@ require('dotenv').config();
 const { botCheckReady, botCollectMessage, botLogin } = require('./discord-bot/discord-bot');
 const routes = require('./routes/index');
 
-const { PORT = 3000 } = process.env;
+const { PORT = 3001 } = process.env;
 
 const app = express();
 app.use(cors());

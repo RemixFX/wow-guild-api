@@ -11,7 +11,14 @@ const botCheckReady = () => {
 
 const botCollectMessage = () => {
   bot.on('messageCreate', (message) => {
-    postMessages(message.content, message.author.username);
+    let filterMessage = message.content.replace('@everyone', '');
+    const emoji = filterMessage.match(/<:\w+:\d+>/g); // массив
+    if (emoji !== null) {
+      for (let i = 0; i < emoji.length; i += 1) {
+        filterMessage = filterMessage.replace(emoji[i], '');
+      }
+    }
+    postMessages(filterMessage, message.author.username);
   });
 };
 
