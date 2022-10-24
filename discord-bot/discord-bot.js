@@ -11,6 +11,7 @@ const botCheckReady = () => {
 
 const botCollectMessage = () => {
   bot.on('messageCreate', (message) => {
+    // if (message.chanell === dw34dds)
     let filterMessage = message.content.replace('@everyone', '');
     const emoji = filterMessage.match(/<:\w+:\d+>/g); // массив
     if (emoji !== null) {
