@@ -26,4 +26,19 @@ const getEvents = (req, res) => {
   );
 };
 
-module.exports = { postEvents, getEvents };
+const updateEvents = (req, res) => {
+  const reqId = parseInt(req.params.id);
+  const { date, name, raidleader, time } = req.body;
+  db.query(
+    'UPDATE events SET date = $1, name = $2, raidleader = $3, time = $4 WHERE id = $5',
+    [date, name, raidleader, time, reqId],
+    (error, results) => {
+      if (error) {
+       throw error;
+      }
+      res.status(200).send(`Событие с id: ${reqId} изменено`);
+      }
+  )
+}
+
+module.exports = { postEvents, getEvents, updateEvents };
