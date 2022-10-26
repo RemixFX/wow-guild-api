@@ -1,6 +1,6 @@
 const db = require('../db');
 
-const postEvents = (req, res) => {
+const postEvent = (req, res) => {
   const { date, name, raidleader, time } = req.body;
   db.query(
     'INSERT INTO events (date, name, raidleader, time) VALUES ($1, $2, $3, $4)',
@@ -26,7 +26,7 @@ const getEvents = (req, res) => {
   );
 };
 
-const updateEvents = (req, res) => {
+const updateEvent = (req, res) => {
   const reqId = parseInt(req.params.id);
   const { date, name, raidleader, time } = req.body;
   db.query(
@@ -41,4 +41,18 @@ const updateEvents = (req, res) => {
   )
 }
 
-module.exports = { postEvents, getEvents, updateEvents };
+const deleteEvent = (req, res) => {
+  const reqId = parseInt(req.params.id);
+  db.query(
+    'DELETE FROM events WHERE id = $1',
+    [reqId],
+    (error, results) => {
+      if (error) {
+       throw error;
+      }
+      res.status(200).send(`Событие с id: ${reqId} удалено`);
+      }
+  )
+}
+
+module.exports = { postEvent, getEvents, updateEvent, deleteEvent };
