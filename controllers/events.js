@@ -9,7 +9,7 @@ const postEvent = (req, res) => {
       if (error) {
         throw error;
       }
-      res.status(201).send('Cобытие успешно добавлено');
+      res.status(201).send({message: 'Cобытие успешно добавлено'});
     }
   )
 };
@@ -36,7 +36,7 @@ const updateEvent = (req, res) => {
       if (error) {
        throw error;
       }
-      res.status(200).send(`Событие с id: ${reqId} изменено`);
+      res.status(200).send({message: `Событие с id: ${reqId} изменено`});
       }
   )
 }
@@ -50,7 +50,7 @@ const deleteEvent = (req, res) => {
       if (error) {
        throw error;
       }
-      res.status(200).send(`Событие с id: ${reqId} удалено`);
+      res.status(200).send({message: `Событие с id: ${reqId} удалено`});
       }
   )
 }
