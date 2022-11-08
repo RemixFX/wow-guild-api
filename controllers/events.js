@@ -3,13 +3,13 @@ const db = require('../db');
 const postEvent = (req, res) => {
   const { date, name, raidleader, time } = req.body;
   db.query(
-    'INSERT INTO events (date, name, raidleader, time) VALUES ($1, $2, $3, $4)',
+    'INSERT INTO events (date, name, raidleader, time) VALUES ($1, $2, $3, $4) RETURNING id, date, name, raidleader, time',
     [date, name, raidleader, time],
     (error, results) => {
       if (error) {
         throw error;
       }
-      res.status(201).send({message: 'Cобытие успешно добавлено'});
+      res.status(201).json(results.rows[0]);
     }
   )
 };
