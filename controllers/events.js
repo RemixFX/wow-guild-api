@@ -27,16 +27,16 @@ const getEvents = (req, res) => {
 };
 
 const updateEvent = (req, res) => {
-  const reqId = parseInt(req.params.id);
+  const id = parseInt(req.params.id);
   const { date, name, raidleader, time } = req.body;
   db.query(
-    'UPDATE events SET date = $1, name = $2, raidleader = $3, time = $4 WHERE id = $5',
-    [date, name, raidleader, time, reqId],
+    'UPDATE events SET date = $1, name = $2, raidleader = $3, time = $4 WHERE id = $5 RETURNING id, date, name, raidleader, time',
+    [date, name, raidleader, time, id],
     (error, results) => {
       if (error) {
        throw error;
       }
-      res.status(200).send({message: `Событие с id: ${reqId} изменено`});
+      res.status(200).json(results.rows[0]);
       }
   )
 }
