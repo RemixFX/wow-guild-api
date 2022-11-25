@@ -25,21 +25,34 @@ const createUser = (req, res, next) => {
 
 const login = async (req, res, next) => {
   try {
-    console.log(req.cookies, req.get('origin'));
+    console.log(req.get('origin'));
     const { name, password } = req.body;
     const user = await db.query('SELECT * FROM users WHERE name = $1', [name]);
+    console.log(user.rows.length)
     if (user.rows.length === 0) return next(new NotFoundError('Пользователь с таким именем не существует'));
 
     const validPassword = await bcrypt.compare(password, user.rows[0].password);
     if (!validPassword) return next(new UnauthorizedError('Неверный пароль'));
 
-    const token = jwt.sign({ id: user.id }, JWT_SECRET);
+    const token = jwt.sign({ id: user.rows[0].id}, JWT_SECRET);
     res.cookie('jwt', token, { maxAge: 3600000 * 24 * 7, httpOnly: true });
-    res.json(token);
+    res.send({name: user.rows[0].name});
   } catch (error) {
     next(error);
   }
-
 };
 
-module.exports = {createUser, login};
+const getMyProfile = (req, res, next) => {
+  const id = parseInt(req.user.id)
+  console.log(id)
+  db.query('SELECT name FROM users WHERE id = $1', [req.user.id])
+  .then((user) => res.send({name: user.rows[0].name}))
+  .catch((err) => next(err));
+}
+
+const logout = (req, res) => {
+  res.clearCookie('jwt');
+  res.send({ message: 'Выход из профиля' });
+};
+
+module.exports = {createUser, login, getMyProfile, logout};
