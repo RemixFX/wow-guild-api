@@ -1,58 +1,38 @@
 const db = require('../db');
 
-const postEvent = (req, res) => {
+const postEvent = (req, res, next) => {
   const { date, name, raidleader, time } = req.body;
   db.query(
     'INSERT INTO events (date, name, raidleader, time) VALUES ($1, $2, $3, $4) RETURNING id, date, name, raidleader, time',
-    [date, name, raidleader, time],
-    (error, results) => {
-      if (error) {
-        throw error;
-      }
-      res.status(201).json(results.rows[0]);
-    }
-  )
-};
+    [date, name, raidleader, time])
+  .then((events) => res.status(201).json(events.rows[0]))
+  .catch((err) => next(err))
+}
 
-const getEvents = (req, res) => {
+const getEvents = (req, res, next) => {
   db.query(
-    'SELECT * FROM events',
-    (error, results) => {
-      if (error) {
-        throw error;
-      }
-      res.status(200).json(results.rows);
-    },
-  );
+    'SELECT * FROM events')
+    .then((events) => res.status(200).json(events.rows))
+    .catch((err) => next(err))
 };
 
-const updateEvent = (req, res) => {
+const updateEvent = (req, res, next) => {
   const id = parseInt(req.params.id);
   const { date, name, raidleader, time } = req.body;
   db.query(
     'UPDATE events SET date = $1, name = $2, raidleader = $3, time = $4 WHERE id = $5 RETURNING id, date, name, raidleader, time',
-    [date, name, raidleader, time, id],
-    (error, results) => {
-      if (error) {
-       throw error;
-      }
-      res.status(200).json(results.rows[0]);
-      }
-  )
+    [date, name, raidleader, time, id])
+    .then((events) => res.status(200).json(events.rows[0]))
+    .catch((err) => next(err))
 }
 
 const deleteEvent = (req, res) => {
   const reqId = parseInt(req.params.id);
   db.query(
     'DELETE FROM events WHERE id = $1',
-    [reqId],
-    (error, results) => {
-      if (error) {
-       throw error;
-      }
-      res.status(200).send({message: `Событие с id: ${reqId} удалено`});
-      }
-  )
+    [reqId])
+    .then(() => res.status(200).send({ id: reqId }))
+    .catch((err) => next(err))
 }
 
 module.exports = { postEvent, getEvents, updateEvent, deleteEvent };

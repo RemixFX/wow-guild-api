@@ -43,8 +43,6 @@ const login = async (req, res, next) => {
 };
 
 const getMyProfile = (req, res, next) => {
-  const id = parseInt(req.user.id)
-  console.log(id)
   db.query('SELECT name FROM users WHERE id = $1', [req.user.id])
   .then((user) => res.send({name: user.rows[0].name}))
   .catch((err) => next(err));
