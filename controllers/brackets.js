@@ -18,10 +18,22 @@ const postBracket = async (req, res, next) => {
 
 const getBrackets = (req, res, next) => {
   db.query(
-    'SELECT * FROM brackets')
+    'SELECT * FROM brackets ORDER BY bd_id')
     .then((brackets) => res.status(200).json(brackets.rows))
     .catch((err) => next(err))
 };
 
+const updateNote = (req, res, next) => {
+  const { note, playerID, raidID } = req.body;
+  db.query(
+    'UPDATE brackets SET note = $1 WHERE id = $2 AND raid_id = $3 RETURNING raid_id, id, note, group_name',
+    [note, playerID, raidID])
+    .then((result) => res.status(200).json(result.rows[0]))
+    .catch((err) => {
+      console.log(err)
+      next(err)
+    })
+}
 
-module.exports = { postBracket, getBrackets }
+
+module.exports = { postBracket, getBrackets, updateNote }
