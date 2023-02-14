@@ -4,6 +4,7 @@ const cors = require('cors');
 require('dotenv').config();
 const errorHandler = require('./middlewares/error-handler');
 const { botCheckReady, botCollectMessage, botLogin } = require('./discord-bot/discord-bot');
+const {getSirusBossFight, getLatestGuildMessages } = require('./controllers/guildNews')
 const routes = require('./routes/index');
 
 const { PORT = 3001 } = process.env;
@@ -17,6 +18,7 @@ app.use(cors({credentials: true, origin: true}));
 botCheckReady();
 botCollectMessage();
 botLogin();
+setInterval(() => getLatestGuildMessages(), 1000 * 60 * 15)
 
 app.use(routes);
 
