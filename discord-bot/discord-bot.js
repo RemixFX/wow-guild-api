@@ -14,6 +14,11 @@ const botCollectMessage = () => {
     // if (message.chanell === dw34dds)
     console.log(message.content)
     let filterMessage = message.content.replace('@everyone', '');
+    if (message.embeds.length > 0) {
+      message.embeds.forEach((m) => {
+        filterMessage.concat('\n', m.description)
+      })
+    }
     const emoji = filterMessage.match(/<:\w+:\d+>/g); // массив
     if (emoji !== null) {
       for (let i = 0; i < emoji.length; i += 1) {

@@ -18,7 +18,7 @@ app.use(cors({credentials: true, origin: true}));
 botCheckReady();
 botCollectMessage();
 botLogin();
-setInterval(() => getLatestGuildMessages(), 1000 * 60 * 15)
+setInterval(() => getLatestGuildMessages(), 1000  * 60 * 15)
 
 app.use(routes);
 

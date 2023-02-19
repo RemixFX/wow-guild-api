@@ -1,6 +1,7 @@
 const db = require('../db');
-const fetch = (...args) =>
-  import('node-fetch').then(({ default: fetch }) => fetch(...args));
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+/* const fetch = (...args) =>
+  import('node-fetch').then(({ default: fetch }) => fetch(...args)); */
 
 const postGuildMessage = (req, res, next) => {
   const date = new Date();
@@ -61,7 +62,7 @@ const getLatestGuildMessages = async (req, res, next) => {
     bossFightData.data.forEach((fight) => {
       if (new Date(fight.timeEnd) > new Date(date)) {
         newMessages.push(
-          `${fight.timeEnd} Гильдия победила ${fight.boss_name} в ${fight.players}ке ${fight.difficulty > 1 ? 'героической сложности' : ''}`
+          `${fight.timeEnd} Гильдия победила ${fight.boss_name} ${fight.difficulty > 1 ? 'героической сложности' : ''} в рейде из ${fight.players} человек `
         )
       } else return
     })
@@ -73,7 +74,6 @@ const getLatestGuildMessages = async (req, res, next) => {
   }
   catch (err) {
     console.log(err)
-    next(err)
   }
 };
 
