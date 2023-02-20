@@ -24,6 +24,18 @@ const getGuildMessages = (req, res) => {
     .catch((err) => next(err))
 };
 
+const deleteGuildMessage = (req, res) => {
+  const reqId = parseInt(req.params.id);
+  db.query(
+    'DELETE FROM guild_message WHERE id = $1 RETURNING id',
+    [reqId])
+    .then((result) => res.status(200).json(result.rows[0].id))
+    .catch((err) => {
+      console.log(err)
+      next(err)
+    })
+}
+
 const getSirusBossFight = () => {
   return fetch('https://api.sirus.su/api/base/57/leader-board/bossfights/latest?&guild=5', {
     method: 'GET',
@@ -77,4 +89,4 @@ const getLatestGuildMessages = async (req, res, next) => {
   }
 };
 
-module.exports = { postGuildMessage, getGuildMessages, getLatestGuildMessages, getSirusBossFight }
+module.exports = { postGuildMessage, getGuildMessages, getLatestGuildMessages, getSirusBossFight, deleteGuildMessage }

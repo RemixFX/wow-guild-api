@@ -5,7 +5,7 @@ const { createUser, login, getMyProfile, logout } = require('../controllers/user
 const auth = require('../middlewares/auth');
 const NotFoundError = require('../errors/not-found-error');
 const { postBracket, getBrackets, updateNote } = require('../controllers/brackets');
-const { getGuildMessages, postGuildMessage, getLatestGuildMessages } = require('../controllers/guildNews');
+const { getGuildMessages, postGuildMessage, getLatestGuildMessages, deleteGuildMessage } = require('../controllers/guildNews');
 
 router.post('/brackets', postBracket)
 router.get('/brackets', getBrackets)
@@ -15,6 +15,7 @@ router.post('/signup', createUser);
 router.get('/discord', getMessages);
 router.get('/news', getGuildMessages);
 router.post('/news', postGuildMessage);
+router.delete('/news/:id', deleteGuildMessage);
 router.get('/latestnews', getLatestGuildMessages);
 router.get('/events', getEvents);
 router.post('/signout', logout);

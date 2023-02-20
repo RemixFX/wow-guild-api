@@ -4,7 +4,7 @@ const cors = require('cors');
 require('dotenv').config();
 const errorHandler = require('./middlewares/error-handler');
 const { botCheckReady, botCollectMessage, botLogin } = require('./discord-bot/discord-bot');
-const {getSirusBossFight, getLatestGuildMessages } = require('./controllers/guildNews')
+const { getLatestGuildMessages } = require('./controllers/guildNews')
 const routes = require('./routes/index');
 
 const { PORT = 3001 } = process.env;
