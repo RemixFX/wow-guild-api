@@ -4,26 +4,28 @@ const { getEvents, postEvent, updateEvent, deleteEvent } = require('../controlle
 const { createUser, login, getMyProfile, logout } = require('../controllers/user');
 const auth = require('../middlewares/auth');
 const NotFoundError = require('../errors/not-found-error');
-const { postBracket, getBrackets, updateNote } = require('../controllers/brackets');
+const { postBracket, getBrackets, deleteBracket, updateNote } = require('../controllers/brackets');
 const { getGuildMessages, postGuildMessage, getLatestGuildMessages, deleteGuildMessage } = require('../controllers/guildNews');
 
-router.post('/brackets', postBracket)
 router.get('/brackets', getBrackets)
-router.put('/update', updateNote);
 router.post('/signin', login);
-router.post('/signup', createUser);
 router.get('/discord', getMessages);
 router.get('/news', getGuildMessages);
-router.post('/news', postGuildMessage);
-router.delete('/news/:id', deleteGuildMessage);
 router.get('/latestnews', getLatestGuildMessages);
 router.get('/events', getEvents);
 router.post('/signout', logout);
+router.delete('/bracket/:id', deleteBracket);
 
 router.get('/me', auth, getMyProfile);
+router.post('/signup', auth, createUser);
 router.post('/events', auth, postEvent);
 router.put('/events/:id', auth, updateEvent);
 router.delete('/events/:id', auth, deleteEvent);
+router.post('/brackets', auth, postBracket)
+
+router.put('/update', auth, updateNote);
+router.post('/news', auth, postGuildMessage);
+router.delete('/news/:id', auth, deleteGuildMessage);
 
 
 router.use('*', (req, res, next) => {

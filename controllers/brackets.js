@@ -23,6 +23,18 @@ const getBrackets = (req, res, next) => {
     .catch((err) => next(err))
 };
 
+const deleteBracket = (req, res, next) => {
+  const reqId = parseInt(req.params.id);
+  db.query(
+    'DELETE FROM brackets WHERE raid_id = $1',
+    [reqId])
+    .then(() => res.status(200).json(String(reqId)))
+    .catch((err) => {
+      console.log(err)
+      next(err)
+    })
+}
+
 const updateNote = (req, res, next) => {
   const { note, playerID, raidID } = req.body;
   db.query(
@@ -36,4 +48,4 @@ const updateNote = (req, res, next) => {
 }
 
 
-module.exports = { postBracket, getBrackets, updateNote }
+module.exports = { postBracket, getBrackets, deleteBracket, updateNote }

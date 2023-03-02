@@ -12,9 +12,9 @@ const botCheckReady = () => {
 const botCollectMessage = () => {
   bot.on('messageCreate', (message) => {
     // if (message.chanell === dw34dds)
-    console.log(message.content)
     let filterMessage = message.content.replace('@everyone', '');
     if (message.embeds.length > 0) {
+      console.log('найдено embeds')
       message.embeds.forEach((m) => {
         filterMessage.concat('\n', m.description)
       })
