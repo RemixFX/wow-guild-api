@@ -3,11 +3,11 @@ const db = require('../db');
 const postBracket = async (req, res, next) => {
   try {
     for (const player of req.body) {
-      const { id, role, name, class_name, race, ilvl, note, group_name, raid_id } = player;
+      const { id, role, name, class_name, race, ilvl, note, group_name, raid_id, raid_name } = player;
       await db.query(
-        `INSERT INTO brackets (id, role, name, class_name, race, ilvl, note, group_name, raid_id)
-     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
-        [id, role, name, class_name, race, ilvl, note, group_name, raid_id])
+        `INSERT INTO brackets (id, role, name, class_name, race, ilvl, note, group_name, raid_id, raid_name)
+     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
+        [id, role, name, class_name, race, ilvl, note, group_name, raid_id, raid_name])
     }
     res.status(201).send({ message: 'Рейд сохранён' });
   } catch (err) {
@@ -20,7 +20,10 @@ const getBrackets = (req, res, next) => {
   db.query(
     'SELECT * FROM brackets ORDER BY bd_id')
     .then((brackets) => res.status(200).json(brackets.rows))
-    .catch((err) => next(err))
+    .catch((err) => {
+      console.log(err)
+      next(err)
+    })
 };
 
 const deleteBracket = (req, res, next) => {
@@ -29,6 +32,20 @@ const deleteBracket = (req, res, next) => {
     'DELETE FROM brackets WHERE raid_id = $1',
     [reqId])
     .then(() => res.status(200).json(String(reqId)))
+    .catch((err) => {
+      console.log(err)
+      next(err)
+    })
+}
+
+const updateNameBracket = (req, res, next) => {
+  const { raidName, raidID } = req.body;
+  db.query(
+    'UPDATE brackets SET raid_name = $1 WHERE raid_id = $2 RETURNING raid_id, raid_name',
+    [raidName, raidID ])
+    .then((result) => {
+      res.status(200).json(result.rows[0])
+    })
     .catch((err) => {
       console.log(err)
       next(err)
@@ -48,4 +65,4 @@ const updateNote = (req, res, next) => {
 }
 
 
-module.exports = { postBracket, getBrackets, deleteBracket, updateNote }
+module.exports = { postBracket, getBrackets, deleteBracket, updateNote, updateNameBracket }

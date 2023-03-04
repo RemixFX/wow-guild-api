@@ -4,7 +4,7 @@ const { getEvents, postEvent, updateEvent, deleteEvent } = require('../controlle
 const { createUser, login, getMyProfile, logout } = require('../controllers/user');
 const auth = require('../middlewares/auth');
 const NotFoundError = require('../errors/not-found-error');
-const { postBracket, getBrackets, deleteBracket, updateNote } = require('../controllers/brackets');
+const { postBracket, getBrackets, deleteBracket, updateNote, updateNameBracket } = require('../controllers/brackets');
 const { getGuildMessages, postGuildMessage, getLatestGuildMessages, deleteGuildMessage } = require('../controllers/guildNews');
 
 router.get('/brackets', getBrackets)
@@ -15,6 +15,7 @@ router.get('/latestnews', getLatestGuildMessages);
 router.get('/events', getEvents);
 router.post('/signout', logout);
 router.delete('/bracket/:id', deleteBracket);
+router.put('/update', updateNameBracket)
 
 router.get('/me', auth, getMyProfile);
 router.post('/signup', auth, createUser);
