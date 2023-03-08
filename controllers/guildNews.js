@@ -1,7 +1,5 @@
 const db = require('../db');
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
-/* const fetch = (...args) =>
-  import('node-fetch').then(({ default: fetch }) => fetch(...args)); */
 
 const postGuildMessage = (req, res, next) => {
   const date = new Date();
@@ -13,18 +11,18 @@ const postGuildMessage = (req, res, next) => {
     .then((message) => res.status(201).json(message.rows[0]))
     .catch((err) => {
       console.log(err)
-      next(err)
+      next({message: 'Ошибка сервера. Не удалось добавить новость'})
     });
 };
 
-const getGuildMessages = (req, res) => {
+const getGuildMessages = (req, res, next) => {
   db.query(
     'SELECT *, to_char(date, \'dd.mm.yyyy hh24:mi:ss\') AS date FROM guild_message')
     .then((messages) => res.status(200).json(messages.rows))
-    .catch((err) => next(err))
+    .catch((err) => next({message: 'Ошибка сервера. Не удалось загрузить новости'}))
 };
 
-const deleteGuildMessage = (req, res) => {
+const deleteGuildMessage = (req, res, next) => {
   const reqId = parseInt(req.params.id);
   db.query(
     'DELETE FROM guild_message WHERE id = $1 RETURNING id',
@@ -32,7 +30,7 @@ const deleteGuildMessage = (req, res) => {
     .then((result) => res.status(200).json(result.rows[0].id))
     .catch((err) => {
       console.log(err)
-      next(err)
+      next({message: 'Ошибка сервера. Не удалось удалить новость'})
     })
 }
 
