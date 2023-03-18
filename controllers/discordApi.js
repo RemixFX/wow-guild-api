@@ -10,11 +10,14 @@ const postServerMessage = (content, owner) => {
     .catch((err) => console.log(err));
 };
 
-const getMessages = (req, res) => {
+const getMessages = (req, res, next) => {
   db.query(
     'SELECT *, to_char(date, \'dd.mm.yyyy hh24:mi:ss\') AS date FROM server_message')
     .then((messages) => res.status(200).json(messages.rows))
-    .catch((err) => next(err))
+    .catch((err) => {
+      console.log(err)
+      next(err)
+    })
 };
 
 module.exports = { postServerMessage, getMessages };
