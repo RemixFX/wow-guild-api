@@ -35,7 +35,7 @@ const deleteGuildMessage = (req, res, next) => {
 }
 
 const getSirusBossFight = () => {
-  return fetch('https://api.sirus.su/api/base/57/leader-board/bossfights/latest?&guild=5', {
+  return fetch('https://api.sirus.su/api/base/57/leader-board/bossfights/latest?&guild=225', {
     method: 'GET',
     headers: {
       'Accept': 'application/json',
